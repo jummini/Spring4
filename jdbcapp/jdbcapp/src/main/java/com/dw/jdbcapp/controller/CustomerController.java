@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerController {
@@ -19,5 +21,12 @@ public class CustomerController {
     @GetMapping
     public Customer getCustomerById(@RequestParam String id) {
         return customerService.getCustomerById(id);
+    }
+
+    // GET 요청 (고객 전체의 정보 조회)
+    // URL: GET /api/customer/all
+    @GetMapping("/all")
+    public List<Customer> getAllCustomers() {
+        return customerService.getAllCustomers();
     }
 }

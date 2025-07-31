@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Repository
 public class CustomerTemplateRepository {
@@ -41,5 +42,10 @@ public class CustomerTemplateRepository {
         // queryForObject는 DB로부터의 응답이 한개일때
         // query는 여러개일때 사용하며 List<Customer>형태로 만들어짐
         return jdbcTemplate.queryForObject(query, customerRowMapper, id);
+    }
+
+    public List<Customer> getAllCustomers() {
+        String query = "select * from 고객";
+        return jdbcTemplate.query(query, customerRowMapper);
     }
 }

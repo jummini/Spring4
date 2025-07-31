@@ -6,6 +6,8 @@ import com.dw.jdbcapp.repository.CustomerTemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerService {
     @Autowired
@@ -16,5 +18,9 @@ public class CustomerService {
     public Customer getCustomerById(String id) {
         //return customerJdbcRepository.getCustomerById(id);
         return customerTemplateRepository.getCustomerById(id);
+    }
+
+    public List<Customer> getAllCustomers() {
+        return customerTemplateRepository.getAllCustomers();
     }
 }
