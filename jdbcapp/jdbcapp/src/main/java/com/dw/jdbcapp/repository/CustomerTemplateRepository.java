@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,5 +48,19 @@ public class CustomerTemplateRepository {
     public List<Customer> getAllCustomers() {
         String query = "select * from 고객";
         return jdbcTemplate.query(query, customerRowMapper);
+    }
+
+    public List<Customer> getCustomerWithHighMileThanAvg() {
+        String query = "select * from 고객 where 마일리지 > " +
+                "(select avg(마일리지) from 고객)";
+        return jdbcTemplate.query(query, customerRowMapper);
+    }
+
+    public List<Customer> getCustomerByMileageGrade(
+                            @PathVariable String grade) {
+        String query = "select 고객.* from 고객 join 마일리지등급 " +
+                "on 고객.마일리지 between 마일리지등급.하한마일리지 and 마일리지등급.상한마일리지\n" +
+                "where 마일리지등급.등급명 = ?";
+        return jdbcTemplate.query(query, customerRowMapper, grade);
     }
 }

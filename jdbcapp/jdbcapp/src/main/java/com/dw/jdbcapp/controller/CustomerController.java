@@ -31,7 +31,7 @@ public class CustomerController {
     // URL: GET /api/customer/high-mile-than-avg
     @GetMapping("/high-mile-than-avg")
     public List<Customer> getCustomerWithHighMileThanAvg(){
-        return null;
+        return customerService.getCustomerWithHighMileThanAvg();
     }
 
     // GET 요청 (마일리지등급을 매개변수로 해당 마일리지등급을 가진 고객들을 조회)
@@ -39,6 +39,6 @@ public class CustomerController {
     @GetMapping("/grade/{grade}")
     public List<Customer> getCustomerByMileageGrade(
                             @PathVariable String grade) {
-
+        return customerService.getCustomerByMileageGrade(grade);
     }
 }
