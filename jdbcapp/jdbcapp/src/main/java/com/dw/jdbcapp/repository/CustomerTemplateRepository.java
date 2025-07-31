@@ -56,8 +56,7 @@ public class CustomerTemplateRepository {
         return jdbcTemplate.query(query, customerRowMapper);
     }
 
-    public List<Customer> getCustomerByMileageGrade(
-                            @PathVariable String grade) {
+    public List<Customer> getCustomerByMileageGrade(String grade) {
         String query = "select 고객.* from 고객 join 마일리지등급 " +
                 "on 고객.마일리지 between 마일리지등급.하한마일리지 and 마일리지등급.상한마일리지\n" +
                 "where 마일리지등급.등급명 = ?";

@@ -1,5 +1,6 @@
 package com.dw.jdbcapp.service;
 
+import com.dw.jdbcapp.mapper.CustomerMapper;
 import com.dw.jdbcapp.model.Customer;
 import com.dw.jdbcapp.repository.CustomerJdbcRepository;
 import com.dw.jdbcapp.repository.CustomerTemplateRepository;
@@ -15,22 +16,23 @@ public class CustomerService {
     CustomerJdbcRepository customerJdbcRepository;
     @Autowired
     CustomerTemplateRepository customerTemplateRepository;
+    @Autowired
+    CustomerMapper customerMapper;
 
     public Customer getCustomerById(String id) {
         //return customerJdbcRepository.getCustomerById(id);
-        return customerTemplateRepository.getCustomerById(id);
+        return customerMapper.getCustomerById(id);
     }
 
     public List<Customer> getAllCustomers() {
-        return customerTemplateRepository.getAllCustomers();
+        return customerMapper.getAllCustomers();
     }
 
     public List<Customer> getCustomerWithHighMileThanAvg() {
-        return customerTemplateRepository.getCustomerWithHighMileThanAvg();
+        return customerMapper.getCustomerWithHighMileThanAvg();
     }
 
-    public List<Customer> getCustomerByMileageGrade(
-                            @PathVariable String grade) {
-        return customerTemplateRepository.getCustomerByMileageGrade(grade);
+    public List<Customer> getCustomerByMileageGrade(String grade) {
+        return customerMapper.getCustomerByMileageGrade(grade);
     }
 }
