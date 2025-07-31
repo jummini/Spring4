@@ -3,10 +3,7 @@ package com.dw.jdbcapp.controller;
 import com.dw.jdbcapp.model.Customer;
 import com.dw.jdbcapp.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +25,20 @@ public class CustomerController {
     @GetMapping("/all")
     public List<Customer> getAllCustomers() {
         return customerService.getAllCustomers();
+    }
+
+    // GET 요청 (전체 평균마일리지보다 큰 마일리지를 가진 고객들을 조회)
+    // URL: GET /api/customer/high-mile-than-avg
+    @GetMapping("/high-mile-than-avg")
+    public List<Customer> getCustomerWithHighMileThanAvg(){
+        return null;
+    }
+
+    // GET 요청 (마일리지등급을 매개변수로 해당 마일리지등급을 가진 고객들을 조회)
+    // URL: GET /api/customer/grade/{grade}
+    @GetMapping("/grade/{grade}")
+    public List<Customer> getCustomerByMileageGrade(
+                            @PathVariable String grade) {
+
     }
 }
