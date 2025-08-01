@@ -20,7 +20,6 @@ public class CustomerService {
     CustomerMapper customerMapper;
 
     public Customer getCustomerById(String id) {
-        //return customerJdbcRepository.getCustomerById(id);
         return customerMapper.getCustomerById(id);
     }
 
@@ -32,7 +31,8 @@ public class CustomerService {
         return customerMapper.getCustomerWithHighMileThanAvg();
     }
 
-    public List<Customer> getCustomerByMileageGrade(String grade) {
+    public List<Customer> getCustomerByMileageGrade(
+                            @PathVariable String grade) {
         return customerMapper.getCustomerByMileageGrade(grade);
     }
 }

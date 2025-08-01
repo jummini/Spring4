@@ -4,10 +4,13 @@ import com.dw.jdbcapp.model.OrderDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
+@Repository
 public class OrderDetailTemplateRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -25,4 +28,9 @@ public class OrderDetailTemplateRepository {
             return orderDetail;
         }
     };
+
+    public List<OrderDetail> getAllOrderDetails() {
+        String query = "select * from 주문세부";
+        return jdbcTemplate.query(query, orderDetailRowMapper);
+    }
 }

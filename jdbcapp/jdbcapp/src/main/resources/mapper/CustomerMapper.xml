@@ -1,44 +1,33 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.dw.jdbcapp.mapper.CustomerMapper">
-
-    <!-- Customer 결과 매핑 정의 -->
+    <!-- Customer 클래스 매핑 정의 (id는 아무 고유이름, type은 모델클래스 -->
     <resultMap id="customerResultMap" type="Customer">
-        <result property="customerId" column="고객번호"/>
-        <result property="companyName" column="고객회사명"/>
-        <result property="contactName" column="담당자명"/>
-        <result property="contactTitle" column="담당자직위"/>
-        <result property="address" column="주소"/>
-        <result property="city" column="도시"/>
-        <result property="region" column="지역"/>
-        <result property="phone" column="전화번호"/>
-        <result property="mileage" column="마일리지"/>
+        <!-- property는 클래스필드, column은 테이블컬럼 -->
+        <result property="customerId" column="고객번호" />
+        <result property="companyName" column="고객회사명" />
+        <result property="contactName" column="담당자명" />
+        <result property="contactTitle" column="담당자직위" />
+        <result property="address" column="주소" />
+        <result property="city" column="도시" />
+        <result property="region" column="지역" />
+        <result property="phone" column="전화번호" />
+        <result property="mileage" column="마일리지" />
     </resultMap>
-
-    <!-- ID로 고객 조회 -->
-    <select id="getCustomerById" parameterType="String" resultMap="customerResultMap">
+    <select id="getCustomerById" resultMap="customerResultMap">
         SELECT * FROM 고객 WHERE 고객번호 = #{id}
     </select>
-
-    <!-- 모든 고객 조회 -->
     <select id="getAllCustomers" resultMap="customerResultMap">
         SELECT * FROM 고객
     </select>
-
-    <!-- 평균 마일리지보다 높은 고객들 조회 -->
     <select id="getCustomerWithHighMileThanAvg" resultMap="customerResultMap">
-        SELECT * FROM 고객
-        WHERE 마일리지 > (SELECT AVG(마일리지) FROM 고객)
+        SELECT * FROM 고객 WHERE 마일리지 > (SELECT AVG(마일리지) FROM 고객)
     </select>
-
-    <!-- 마일리지 등급별 고객 조회 -->
-    <select id="getCustomerByMileageGrade" parameterType="String" resultMap="customerResultMap">
-        SELECT 고객.*
-        FROM 고객
-        JOIN 마일리지등급 ON 고객.마일리지 BETWEEN 마일리지등급.하한마일리지 AND 마일리지등급.상한마일리지
-        WHERE 마일리지등급.등급명 = #{grade}
+    <select id="getCustomerByMileageGrade" resultMap="customerResultMap">
+        select 고객.* from 고객 join 마일리지등급
+        on 고객.마일리지
+        between 마일리지등급.하한마일리지 and 마일리지등급.상한마일리지
+        where 마일리지등급.등급명 = #{grade}
     </select>
-
 </mapper>

@@ -4,10 +4,13 @@ import com.dw.jdbcapp.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
+@Repository
 public class ProductTemplateRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -25,4 +28,39 @@ public class ProductTemplateRepository {
             return product;
         }
     };
+
+    public Product saveProduct(Product product) {
+        String query = "insert into 제품(제품번호,제품명,포장단위,단가,재고)"
+                + " values(?,?,?,?,?)";
+        jdbcTemplate.update(query,
+                product.getProductId(),
+                product.getProductName(),
+                product.getPackageUnit(),
+                product.getUnitPrice(),
+                product.getStock());
+        return product;
+    }
+
+    public Product updateProduct(Product product) {
+        String query = "update 제품 set 제품명=?, 포장단위=?, 단가=?, " +
+                "재고=? where 제품번호=?";
+        jdbcTemplate.update(query,
+                product.getProductName(),
+                product.getPackageUnit(),
+                product.getUnitPrice(),
+                product.getStock(),
+                product.getProductId());
+        return product;
+    }
+
+    public void deleteProduct(int id) {
+        String query = "delete from 제품 where 제품번호=?";
+        jdbcTemplate.update(query, id);
+    }
+
+    public List<Product> getProductByProductName(String name) {
+        String query = "select * from 제품 where 제품명 like ?";
+        String wildCard = "%"+name+"%";
+        return jdbcTemplate.query(query, productRowMapper, wildCard);
+    }
 }
