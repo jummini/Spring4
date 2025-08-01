@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dw.jdbcapp.mapper.ProductMapper">
+    <resultMap id="ProductResultMap" type="Product">
+        <result property="productId" column="제품번호" />
+        <result property="productName" column="제품명" />
+        <result property="packageUnit" column="포장단위" />
+        <result property="unitPrice" column="단가" />
+        <result property="stock" column="재고" />
+    </resultMap>
+    <select id="saveProduct" resultMap="ProductResultMap">
+        insert into 제품(제품번호,제품명,포장단위,단가,재고)
+        values(#{product.productId}, #{product.productName},
+        #{product.packageUnit}, #{product.unitPrice}, #{product.stock})
+    </select>
+    <select id="updateProduct" resultMap="ProductResultMap">
+        update 제품
+        set 제품명=#{product.productName},
+            포장단위=#{product.packageUnit},
+            단가=#{product.unitPrice},
+            재고=#{product.stock}
+        where 제품번호=#{product.productId}
+    </select>
+    <select id="deleteProduct" resultMap="ProductResultMap">
+        delete from 제품 where 제품번호=#{id}
+    </select>
+    <select id="getProductByProductName" resultMap="ProductResultMap">
+        select * from 제품 where 제품명
+        like CONCAT('%', #{name}, '%')
+    </select>
+</mapper>

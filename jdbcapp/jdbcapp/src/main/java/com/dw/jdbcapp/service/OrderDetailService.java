@@ -1,5 +1,6 @@
 package com.dw.jdbcapp.service;
 
+import com.dw.jdbcapp.mapper.OrderDetailMapper;
 import com.dw.jdbcapp.model.OrderDetail;
 import com.dw.jdbcapp.repository.OrderDetailTemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,9 @@ import java.util.List;
 @Service
 public class OrderDetailService {
     @Autowired
-    OrderDetailTemplateRepository orderDetailTemplateRepository;
+    OrderDetailMapper orderDetailMapper;
 
     public List<OrderDetail> getAllOrderDetails() {
-        return  orderDetailTemplateRepository.getAllOrderDetails();
+        return  orderDetailMapper.getAllOrderDetails();
     }
 }

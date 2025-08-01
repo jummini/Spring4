@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dw.jdbcapp.mapper.OrderDetailMapper">
+    <resultMap id="OrderDetailResultMap" type="OrderDetail">
+        <result property="orderId" column="주문번호" />
+        <result property="productId" column="제품번호" />
+        <result property="unitPrice" column="단가" />
+        <result property="orderQuantity" column="주문수량" />
+        <result property="discountRate" column="할인율" />
+    </resultMap>
+    <select id="getAllOrderDetails" resultMap="OrderDetailResultMap">
+        select * from 주문세부
+    </select>
+</mapper>
