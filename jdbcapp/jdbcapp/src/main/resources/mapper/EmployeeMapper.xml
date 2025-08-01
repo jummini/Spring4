@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dw.jdbcapp.mapper.EmployeeMapper">
+    <resultMap id="employeeResultMap" type="Employee">
+        <result property="employeeId" column="사원번호" />
+        <result property="name" column="이름" />
+        <result property="englishName" column="영문이름" />
+        <result property="position" column="직위" />
+        <result property="gender" column="성별" />
+        <result property="birthDate" column="생일" />
+        <result property="hireDate" column="입사일" />
+        <result property="address" column="주소" />
+        <result property="city" column="도시" />
+        <result property="region" column="지역" />
+        <result property="homePhone" column="집전화" />
+        <result property="supervisorId" column="상사번호" />
+        <result property="departmentId" column="부서번호" />
+    </resultMap>
+    <select id="getEmployeeById" resultMap="employeeResultMap">
+        select * from 사원 where 사원번호 = #{id}
+    </select>
+    <select id="getEmployeesWithDepartmentAndPosition" resultMap="employeeResultMap">
+        select * from 사원
+        where 부서번호 = #{departmentNumber} and 직위 = #{position}
+    </select>
+    <select id="getEmployeesByHiredate" resultMap="employeeResultMap">
+        select * from 사원 where 입사일 >= #{date}
+    </select>
+</mapper>

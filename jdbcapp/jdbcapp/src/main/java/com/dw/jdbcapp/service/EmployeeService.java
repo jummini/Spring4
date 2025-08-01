@@ -1,5 +1,6 @@
 package com.dw.jdbcapp.service;
 
+import com.dw.jdbcapp.mapper.EmployeeMapper;
 import com.dw.jdbcapp.model.Employee;
 import com.dw.jdbcapp.repository.EmployeeTemplateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +12,19 @@ import java.util.List;
 @Service
 public class EmployeeService {
     @Autowired
-    EmployeeTemplateRepository employeeTemplateRepository;
+    EmployeeMapper employeeMapper;
 
     public Employee getEmployeeById(String id) {
-        return employeeTemplateRepository.getEmployeeById(id);
+        return employeeMapper.getEmployeeById(id);
     }
 
     public List<Employee> getEmployeesWithDepartmentAndPosition(
             String departmentNumber, String position) {
-        return employeeTemplateRepository.getEmployeesWithDepartmentAndPosition(
+        return employeeMapper.getEmployeesWithDepartmentAndPosition(
                 departmentNumber, position);
     }
 
     public List<Employee> getEmployeesByHiredate(String date) {
-        return employeeTemplateRepository.getEmployeesByHiredate(date);
+        return employeeMapper.getEmployeesByHiredate(date);
     }
 }
