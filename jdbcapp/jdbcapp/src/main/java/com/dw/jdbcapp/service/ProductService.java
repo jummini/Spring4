@@ -30,6 +30,7 @@ public class ProductService {
     }
 
     public List<Product> getProductByProductName(String name) {
-        return productMapper.getProductByProductName(name);
+        String wildCard = "%" + name + "%";
+        return productMapper.getProductByProductName(wildCard);
     }
 }
