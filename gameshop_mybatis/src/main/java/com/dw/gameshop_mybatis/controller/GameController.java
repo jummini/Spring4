@@ -1,5 +1,6 @@
 package com.dw.gameshop_mybatis.controller;
 
+import com.dw.gameshop_mybatis.dto.GameDTO;
 import com.dw.gameshop_mybatis.model.Game;
 import com.dw.gameshop_mybatis.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,12 @@ public class GameController {
     GameService gameService;
 
     @GetMapping("/all")
-    public List<Game> getAllGames() {
+    public List<GameDTO> getAllGames() {
         return gameService.getAllGames();
     }
 
     @GetMapping("/id/{id}")
-    public Game getGameById(@PathVariable long id) {
+    public GameDTO getGameById(@PathVariable long id) {
         return gameService.getGameById(id);
     }
 }
