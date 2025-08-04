@@ -24,6 +24,11 @@ public class GameService {
     }
 
     public GameDTO getGameById(long id) {
-        return gameMapper.getGameById(id);
+        Game game = gameMapper.getGameById(id);
+        if (game != null) {
+            return game.toDTO();
+        } else {
+            throw new RuntimeException("해당 Game이 없습니다. ID : " + id);
+        }
     }
 }
