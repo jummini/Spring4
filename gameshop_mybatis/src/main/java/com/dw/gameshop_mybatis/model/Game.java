@@ -13,6 +13,6 @@ public class Game {
     private String title;
     private GameGenre genre;
     private int price;
-    private String image_url;
+    private String imageUrl;
     private String text;
 }
