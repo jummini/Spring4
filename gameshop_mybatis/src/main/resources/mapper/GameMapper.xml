@@ -7,4 +7,10 @@
         select id, title, genre, price, image_url, text
         from games
     </select>
+
+    <select id="getGameById" resultType="Game">
+        select id, title, genre, price, image_url, text
+        from games
+        where id = #{id}
+    </select>
 </mapper>

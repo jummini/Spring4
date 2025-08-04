@@ -15,4 +15,8 @@ public class GameService {
     public List<Game> getAllGames() {
         return gameMapper.getAllGames();
     }
+
+    public Game getGameById(long id) {
+        return gameMapper.getGameById(id);
+    }
 }
