@@ -22,15 +22,59 @@
         </association>
     </resultMap>
 
-    <select id="getBoardById" resultMap="BoardWithUserMap"></select>
+    <select id="getBoardById" resultMap="BoardWithUserMap">
+        select
+        b.id, b.title, b.content, b.created_date, b.modified_date,
+        b.is_active, u.user_name, u.email, u.real_name, u.created_at,
+        a.authority_name
+        from board b
+        join user u on b.user_name = u.user_name
+        join authority a on u.user_authority = a.authority_name
+        where b.id = #{id} and b.is_active = true
+    </select>
 
-    <select id="getAllBoards" resultMap="BoardWithUserMap"></select>
+    <select id="getAllBoards" resultMap="BoardWithUserMap">
+        select
+        b.id, b.title, b.content, b.created_date, b.modified_date,
+        b.is_active, u.user_name, u.email, u.real_name, u.created_at,
+        a.authority_name
+        from board b
+        join user u on b.user_name = u.user_name
+        join authority a on u.user_authority = a.authority_name
+        where b.is_active = true
+    </select>
 
     <insert id="saveBoard" useGeneratedKeys="true" keyProperty="id">
-        
+        insert into board (
+        title,
+        content,
+        user_name,
+        created_date,
+        modified_date,
+        is_active
+        ) values (
+        #{board.title},
+        #{board.content},
+        #{board.user.userName},
+        #{board.createdDate},
+        #{board.modifiedDate},
+        #{board.isActive}
+        )
     </insert>
 
-    <update id="updateBoard"></update>
+    <update id="updateBoard">
+        update board
+        set
+        title = #{board.title},
+        content = #{board.content},
+        modified_date = #{board.modifiedDate}
+        where
+        id = #{board.id} and is_active = true
+    </update>
 
-    <delete id="deleteBoard"></delete>
+    <delete id="deleteBoard">
+        update board
+        set is_active = false
+        where id = #{id}
+    </delete>
 </mapper>
