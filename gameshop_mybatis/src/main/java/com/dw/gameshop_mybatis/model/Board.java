@@ -1,0 +1,30 @@
+package com.dw.gameshop_mybatis.model;
+
+import com.dw.gameshop_mybatis.dto.BoardDTO;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+public class Board {
+    private Long id;
+    private String title;
+    private String content;
+    private User user;
+    private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
+    private Boolean isActive = true;
+
+    public BoardDTO toDto() {
+        return new BoardDTO(
+                this.id,
+                this.title,
+                this.content,
+                this.user.getUserName(),
+                this.modifiedDate);
+    }
+}
