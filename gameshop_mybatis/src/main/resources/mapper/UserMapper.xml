@@ -23,4 +23,22 @@
         on u.user_authority = a.authority_name
         where u.user_name = #{username}
     </select>
+
+    <insert id="registerUser">
+        insert into user (
+        user_name,
+        password,
+        email,
+        real_name,
+        user_authority,
+        created_at
+        ) values (
+        #{userDTO.userName},
+        #{userDTO.password},
+        #{userDTO.email},
+        #{userDTO.realName},
+        'USER',
+        now()
+        )
+    </insert>
 </mapper>

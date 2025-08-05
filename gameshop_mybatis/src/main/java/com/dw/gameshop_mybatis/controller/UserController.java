@@ -2,6 +2,7 @@ package com.dw.gameshop_mybatis.controller;
 
 import com.dw.gameshop_mybatis.dto.UserDTO;
 import com.dw.gameshop_mybatis.exception.UnauthorizedUserException;
+import com.dw.gameshop_mybatis.model.User;
 import com.dw.gameshop_mybatis.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -15,6 +16,14 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDTO> registerUser(
+                                    @RequestBody UserDTO userDTO) {
+        return new ResponseEntity<>(
+                userService.registerUser(userDTO),
+                HttpStatus.CREATED);
+    }
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserDTO userDTO,
@@ -33,8 +42,18 @@ public class UserController {
         }
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        request.getSession().invalidate(); // 세션종료
+        return new ResponseEntity<>(
+                "성공적으로 로그아웃 되었습니다.",
+                HttpStatus.OK);
+    }
+
     @GetMapping("/current-user")
-    public ResponseEntity<UserDTO> getCurrentUser() {
-        return null;
+    public ResponseEntity<UserDTO> getCurrentUser(
+                                HttpServletRequest request) {
+        User user = userService.getCurrentUser(request);
+        return new ResponseEntity<>(user.toDto(), HttpStatus.OK);
     }
 }
