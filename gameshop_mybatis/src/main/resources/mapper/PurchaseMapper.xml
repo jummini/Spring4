@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dw.gameshop_mybatis.mapper.PurchaseMapper">
+
+    <resultMap id="PurchaseWithDetailsMap" type="Purchase">
+        <id property="id" column="id"/>
+        <result property="purchaseTime" column="purchase_time"/>
+
+        <association property="game" javaType="Game">
+            <id property="id" column="id"/>
+            <result property="title" column="title"/>
+            <result property="price" column="price"/>
+        </association>
+
+        <association property="user" javaType="User">
+            <id property="userName" column="user_name"/>
+            <result property="email" column="email"/>
+            <result property="realName" column="real_name"/>
+            <association property="authority" javaType="Authority">
+                <id property="authorityName" column="authority_name"/>
+            </association>
+        </association>
+    </resultMap>
+    
+</mapper>
