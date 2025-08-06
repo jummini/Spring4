@@ -1,16 +1,24 @@
 package com.dw.gameshop_mybatis.service;
 
 import com.dw.gameshop_mybatis.dto.PurchaseDTO;
+import com.dw.gameshop_mybatis.exception.InvalidRequestException;
+import com.dw.gameshop_mybatis.exception.ResourceNotFoundException;
 import com.dw.gameshop_mybatis.mapper.GameMapper;
 import com.dw.gameshop_mybatis.mapper.PurchaseMapper;
 import com.dw.gameshop_mybatis.mapper.UserMapper;
+import com.dw.gameshop_mybatis.model.Game;
+import com.dw.gameshop_mybatis.model.Purchase;
+import com.dw.gameshop_mybatis.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+// @Transactional 클래스에 직접 선언하면 모든 메서드에 트랜잭션이 적용됨
+// 하지만 세밀한 조정이 불가능하므로 좋은 방법이 아님.
 public class PurchaseService {
     @Autowired
     PurchaseMapper purchaseMapper;
@@ -26,6 +34,43 @@ public class PurchaseService {
     @Transactional
     public List<PurchaseDTO> savePurchaseList(
                 List<PurchaseDTO> purchaseDTOList) {
+        if (purchaseDTOList == null || purchaseDTOList.isEmpty()) {
+            throw new InvalidRequestException("구매 목록이 비었습니다.");
+        }
 
+        String userName = purchaseDTOList.getFirst().getUser().getUserName();
+        User user = userMapper.getUserByUserName(userName);
+        if (user == null) {
+            throw new ResourceNotFoundException(
+                    "해당 유저가 없습니다: " + userName);
+        }
+        // PurchaseDTO => Purchase 로 변형
+        List<Purchase> purchases = purchaseDTOList.stream()
+                .map(dto -> {
+                    Game game = gameMapper.getGameById(dto.getGame().getId());
+                    if (game == null)
+                        throw new ResourceNotFoundException("해당 게임이 없습니다.");
+                    return new Purchase(
+                            0,
+                            game,
+                            user,
+                            LocalDateTime.now()
+                    );
+                })
+                .toList();
+        purchaseMapper.savePurchaseList(purchases);
+        return purchaseDTOList;
+    }
+
+    @Transactional(readOnly = true)
+    // 읽기작업은 트랜잭션이 필요없기는 하지만 하는 것이 좋음
+    // readOnly로 세팅을 하면 실제 네트워크에서는 읽기전용 DB서버를 이용하므로
+    // 더 빠르게 서비스를 수행할 수 있음
+    // 클래스에 @Transactional을 선언하면 읽기작업을 할때도 쓰기작업할때처럼 아래의
+    // 트랜잭션 작업을 수행하게 되므로 자원의 낭비가 심하게 됨.
+    // *** 쓰기 트랜잭션이 수행하는 작업
+    // 1)쓰기락(lock) 2)트랜잭션 로그생성 3)롤백을 위한 정보유지
+    public List<PurchaseDTO> getAllPurchases() {
+        // 구매내역 읽기
     }
 }
