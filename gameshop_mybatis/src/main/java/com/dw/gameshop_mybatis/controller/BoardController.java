@@ -25,7 +25,9 @@ public class BoardController {
     @PostMapping("/save")
     public ResponseEntity<Integer> saveBoard(
                             @RequestBody BoardDTO boardDTO) {
-        return null;
+        return new ResponseEntity<>(
+                boardService.saveBoard(boardDTO),
+                HttpStatus.CREATED);
     }
 
     @PutMapping("/update")
