@@ -22,5 +22,45 @@
             </association>
         </association>
     </resultMap>
-    
+
+    <!-- useGeneratedKeys="true" keyProperty="purchase.id" 는 생성한 후 id를 반환할 필요가 있을때 사용
+        id 값은 파라미터로 전달되었던 객체에 자동으로 채워짐 -->
+    <insert id="savePurchase" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO purchase (game_id, user_name, purchase_time)
+        VALUES (#{purchase.game.id}, #{purchase.user.userName}, #{purchase.purchaseTime})
+    </insert>
+
+    <!-- Batch insert 방식
+        단 1번의 데이터베이스 연결로 전부 처리 가능함.
+        그러므로 1번의 트랜잭션 처리에 의해 여러 데이터의 저장이 가능하다.
+        리스트의 데이터양이 많을수록 매우 큰 성능차이가 발생.
+        100개의 데이터라면 100배 이상의 성능차이가 발생할 수 있음.
+    -->
+    <insert id="savePurchaseList" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO purchase (game_id, user_name, purchase_time)
+        VALUES
+        <foreach collection="purchaseList" item="purchase" separator=",">
+            (#{purchase.game.id}, #{purchase.user.userName},
+            #{purchase.purchaseTime})
+        </foreach>
+    </insert>
+
+    <select id="getAllPurchases" resultMap="PurchaseWithDetailsMap">
+        SELECT
+        p.id, p.purchase_time,
+        g.id, g.title, g.price,
+        u.user_name, u.email, u.real_name,
+        a.authority_name
+        FROM purchase p
+        JOIN games g ON p.game_id = g.id
+        JOIN user u ON p.user_name = u.user_name
+        JOIN authority a ON u.user_authority = a.authority_name
+        ORDER BY p.id DESC
+    </select>
+
+    <select id="countPurchaseByUserNameAndGameId" resultType="int">
+        SELECT COUNT(*)
+        FROM purchase
+        WHERE user_name = #{userName} AND game_id = #{gameId}
+    </select>
 </mapper>
