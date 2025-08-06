@@ -55,4 +55,23 @@ public class BoardService {
                 true);
         return boardMapper.saveBoard(newBoard);
     }
+
+    public int updateBoard(BoardDTO boardDTO) {
+        Board board = boardMapper.getBoardById(boardDTO.getId());
+        if (board == null) {
+            throw new ResourceNotFoundException("No Board Exist");
+        }
+        board.setTitle(boardDTO.getTitle());
+        board.setContent(boardDTO.getContent());
+        board.setModifiedDate(LocalDateTime.now());
+        return boardMapper.updateBoard(board);
+    }
+
+    public String deleteBoard(long id) {
+        if (boardMapper.deleteBoard(id) > 0) {
+            return "게시글 " + id + "가 삭제되었습니다.";
+        }else {
+            return "게시글 " + id + "가 존재하지 않습니다.";
+        }
+    }
 }
