@@ -1,0 +1,35 @@
+package com.dw.gameshop_mybatis.service;
+
+import com.dw.gameshop_mybatis.dto.BoardDTO;
+import com.dw.gameshop_mybatis.mapper.BoardMapper;
+import com.dw.gameshop_mybatis.model.Board;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class BoardService {
+    @Autowired
+    BoardMapper boardMapper;
+
+    public List<BoardDTO> getAllBoards() {
+          // 객체지향 프로그래밍 방식
+//        List<BoardDTO> boardDTOList = new ArrayList<>();
+//        List<Board> boardList = boardMapper.getAllBoards();
+//        for (Board board : boardList) {
+//            boardDTOList.add(board.toDto());
+//        }
+//        return boardDTOList;
+
+        // 함수형 프로그래밍 방식 (람다식)
+        return boardMapper.getAllBoards().stream()
+                .map(Board::toDto)
+                .toList();
+        // 1) 재료준비 (재료는 컬렉션이 일반적임) boardMapper.getAllBoards()
+        // 2) 컨베이어벨트역할 stream()
+        // 3) 재료의 재포장(=수정,변형) map()
+        // 4) 새로운 리스트에 담기 toList()
+    }
+}
