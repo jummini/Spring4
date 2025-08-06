@@ -1,6 +1,9 @@
 package com.dw.gameshop_mybatis.controller;
 
 import com.dw.gameshop_mybatis.dto.BoardDTO;
+import com.dw.gameshop_mybatis.service.BoardService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,9 +12,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/board")
 public class BoardController {
+    @Autowired
+    BoardService boardService;
+
     @GetMapping("/all")
     public ResponseEntity<List<BoardDTO>> getAllBoards() {
-        return null;
+        return new ResponseEntity<>(
+                boardService.getAllBoards(),
+                HttpStatus.OK);
     }
 
     @PostMapping("/save")
