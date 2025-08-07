@@ -15,19 +15,30 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/review")
 public class ReviewController {
+    @Autowired
+    ReviewService reviewService;
+    @Autowired
+    UserService userService;
 
     @PostMapping("/save")
     public ResponseEntity<Integer> saveReview(@RequestBody ReviewDTO reviewDTO) {
-        return null;
+        return new ResponseEntity<>(
+                reviewService.saveReview(reviewDTO),
+                HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<ReviewDTO>> getReviewsByGameId(@RequestParam long gameId) {
-        return null;
+        return new ResponseEntity<>(
+                reviewService.getReviewsByGameId(gameId),
+                HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteReview(@PathVariable long id, HttpServletRequest request) {
-        return null;
+        User currentUser = userService.getCurrentUser(request);
+        return new ResponseEntity<>(
+                reviewService.deleteReview(id, currentUser),
+                HttpStatus.OK);
     }
 }

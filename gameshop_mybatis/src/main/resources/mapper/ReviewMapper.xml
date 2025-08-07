@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dw.gameshop_mybatis.mapper.ReviewMapper">
+
+    <resultMap id="ReviewWithDetailsMap" type="Review">
+        <id property="id" column="review_id"/>
+        <result property="point" column="point"/>
+        <result property="reviewText" column="review_text"/>
+        <result property="createdAt" column="created_at"/>
+
+        <association property="game" javaType="Game">
+            <id property="id" column="game_id"/>
+            <result property="title" column="game_title"/>
+        </association>
+
+        <association property="user" javaType="User">
+            <id property="userName" column="user_name"/>
+        </association>
+    </resultMap>
+
+    <insert id="saveReview" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO review (game_id, user_name, point, review_text, created_at)
+        VALUES (#{review.game.id}, #{review.user.userName}, #{review.point}, #{review.reviewText}, NOW())
+    </insert>
+
+    <select id="findByGameId" resultMap="ReviewWithDetailsMap">
+        SELECT
+        r.id AS review_id,
+        r.point,
+        r.review_text,
+        r.created_at,
+        g.id AS game_id,
+        g.title AS game_title,
+        u.user_name
+        FROM review r
+        JOIN games g ON r.game_id = g.id
+        JOIN user u ON r.user_name = u.user_name
+        WHERE r.game_id = #{gameId}
+        ORDER BY r.id DESC
+    </select>
+
+    <select id="findById" resultMap="ReviewWithDetailsMap">
+        SELECT
+        r.id AS review_id,
+        r.point,
+        r.review_text,
+        r.created_at,
+        g.id AS game_id,
+        g.title AS game_title,
+        u.user_name
+        FROM review r
+        JOIN games g ON r.game_id = g.id
+        JOIN user u ON r.user_name = u.user_name
+        WHERE r.id = #{id}
+    </select>
+
+    <delete id="deleteReview">
+        DELETE FROM review WHERE id = #{id}
+    </delete>
+
+</mapper>
