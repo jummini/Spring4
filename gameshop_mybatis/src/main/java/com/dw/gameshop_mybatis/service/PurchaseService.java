@@ -2,6 +2,7 @@ package com.dw.gameshop_mybatis.service;
 
 import com.dw.gameshop_mybatis.dto.PurchaseDTO;
 import com.dw.gameshop_mybatis.exception.InvalidRequestException;
+import com.dw.gameshop_mybatis.exception.PermissionDeniedException;
 import com.dw.gameshop_mybatis.exception.ResourceNotFoundException;
 import com.dw.gameshop_mybatis.mapper.GameMapper;
 import com.dw.gameshop_mybatis.mapper.PurchaseMapper;
@@ -62,7 +63,6 @@ public class PurchaseService {
         return purchaseDTOList;
     }
 
-    @Transactional(readOnly = true)
     // 읽기작업도 트랜잭션이 필요함. 읽는 중에 데이터가 다른 트랜잭션에 의해서
     // 변경되면 데이터의 일관성을 유지할 수 없음(Dirty Read)
     // readOnly로 세팅을 하면 실제 네트워크에서는 읽기전용 DB서버를 이용하므로
@@ -72,9 +72,37 @@ public class PurchaseService {
     // 트랜잭션 작업을 수행하게 되므로 자원의 낭비가 심하게 됨.
     // *** 쓰기 트랜잭션이 수행하는 작업
     // 1)쓰기락(lock) 2)트랜잭션 로그생성 3)롤백을 위한 정보유지
+    @Transactional(readOnly = true)
     public List<PurchaseDTO> getAllPurchases(User currentUser) {
-        // 구매내역 읽기
-        return null;
+        if (currentUser == null) {
+            throw new InvalidRequestException("세션이 없습니다.");
+        }
+        // 관리자 여부 확인
+        if (!currentUser.getAuthority().getAuthorityName().equals("ADMIN")){
+            throw new PermissionDeniedException("권한이 없습니다.");
+        }
+        return purchaseMapper.getAllPurchases().stream()
+                .map(Purchase::toDto).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<PurchaseDTO> getPurchaseListByUserName(
+                            String userName, User currentUser) {
+        if (currentUser == null) {
+            throw new InvalidRequestException("세션이 없습니다.");
+        }
+        // 관리자 여부 확인
+        if (!currentUser.getAuthority().getAuthorityName().equals("ADMIN")){
+            throw new PermissionDeniedException("권한이 없습니다.");
+        }
+        User user = userMapper.getUserByUserName(userName);
+        if (user == null) {
+            throw new ResourceNotFoundException("해당 유저가 없습니다.");
+        }
+        return purchaseMapper.getPurchaseListByUserName(userName)
+                .stream()
+                .map(Purchase::toDto)
+                .toList();
     }
 
     @Transactional(readOnly = true)
