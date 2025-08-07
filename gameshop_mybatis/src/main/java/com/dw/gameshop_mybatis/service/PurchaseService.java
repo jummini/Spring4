@@ -76,4 +76,16 @@ public class PurchaseService {
         // 구매내역 읽기
         return null;
     }
+
+    @Transactional(readOnly = true)
+    public List<PurchaseDTO> getPurchaseListByCurrentUser(User currentUser) {
+        if (currentUser == null) {
+            throw new InvalidRequestException("세션이 없습니다.");
+        }
+        return purchaseMapper
+                .getPurchaseListByUserName(currentUser.getUserName())
+                .stream()
+                .map(Purchase::toDto)
+                .toList();
+    }
 }
