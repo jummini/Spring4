@@ -1,14 +1,14 @@
 package com.dw.gameshop_mybatis.controller;
 
 import com.dw.gameshop_mybatis.dto.PurchaseDTO;
+import com.dw.gameshop_mybatis.model.User;
 import com.dw.gameshop_mybatis.service.PurchaseService;
+import com.dw.gameshop_mybatis.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +17,8 @@ import java.util.List;
 public class PurchaseController {
     @Autowired
     PurchaseService purchaseService;
+    @Autowired
+    UserService userService;
 
     @PostMapping("/save/list")
     public ResponseEntity<List<PurchaseDTO>> savePurchaseList(
@@ -24,5 +26,14 @@ public class PurchaseController {
         return new ResponseEntity<>(
                 purchaseService.savePurchaseList(purchaseDTOList),
                 HttpStatus.CREATED);
+    }
+
+    @GetMapping("/current-user")
+    public ResponseEntity<List<PurchaseDTO>> getPurchaseListByCurrentUser(
+                                    HttpServletRequest request) {
+        User currentUser = userService.getCurrentUser(request);
+        return new ResponseEntity<>(
+                purchaseService.getPurchaseListByCurrentUser(currentUser),
+                HttpStatus.OK);
     }
 }

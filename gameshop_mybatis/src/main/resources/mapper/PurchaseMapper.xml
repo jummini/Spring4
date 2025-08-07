@@ -58,6 +58,20 @@
         ORDER BY p.id DESC
     </select>
 
+    <select id="getPurchaseListByUserName" resultMap="PurchaseWithDetailsMap">
+        SELECT
+        p.id, p.purchase_time,
+        g.id, g.title, g.price,
+        u.user_name, u.email, u.real_name,
+        a.authority_name
+        FROM purchase p
+        JOIN games g ON p.game_id = g.id
+        JOIN user u ON p.user_name = u.user_name
+        JOIN authority a ON u.user_authority = a.authority_name
+        WHERE u.user_name = #{userName}
+        ORDER BY p.id DESC
+    </select>
+
     <select id="countPurchaseByUserNameAndGameId" resultType="int">
         SELECT COUNT(*)
         FROM purchase
