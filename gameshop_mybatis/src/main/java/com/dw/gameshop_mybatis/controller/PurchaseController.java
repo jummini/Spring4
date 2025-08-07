@@ -36,4 +36,23 @@ public class PurchaseController {
                 purchaseService.getPurchaseListByCurrentUser(currentUser),
                 HttpStatus.OK);
     }
+
+    // [관리자권한] 모든 구매내역을 조회하므로 현재 세션이 관리자인지 확인 필요!
+    @GetMapping("/all")
+    public ResponseEntity<List<PurchaseDTO>> getAllPurchases(
+                                    HttpServletRequest request) {
+        User currentUser = userService.getCurrentUser(request);
+        return new ResponseEntity<>(
+                purchaseService.getAllPurchases(currentUser),
+                HttpStatus.OK);
+    }
+    // [관리자권한] 유저 구매내역을 조회하므로 현재 세션이 관리자인지 확인 필요!
+    @GetMapping("/user/{userName}")
+    public ResponseEntity<List<PurchaseDTO>> getPurchaseListByUserName(
+            @PathVariable String userName, HttpServletRequest request) {
+        User currentUser = userService.getCurrentUser(request);
+        return new ResponseEntity<>(
+                purchaseService.getPurchaseListByUserName(currentUser),
+                HttpStatus.OK);
+    }
 }

@@ -72,7 +72,7 @@ public class PurchaseService {
     // 트랜잭션 작업을 수행하게 되므로 자원의 낭비가 심하게 됨.
     // *** 쓰기 트랜잭션이 수행하는 작업
     // 1)쓰기락(lock) 2)트랜잭션 로그생성 3)롤백을 위한 정보유지
-    public List<PurchaseDTO> getAllPurchases() {
+    public List<PurchaseDTO> getAllPurchases(User currentUser) {
         // 구매내역 읽기
         return null;
     }

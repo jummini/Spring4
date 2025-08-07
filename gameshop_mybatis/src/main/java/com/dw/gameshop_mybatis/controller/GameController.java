@@ -1,7 +1,6 @@
 package com.dw.gameshop_mybatis.controller;
 
 import com.dw.gameshop_mybatis.dto.GameDTO;
-import com.dw.gameshop_mybatis.model.Game;
 import com.dw.gameshop_mybatis.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
