@@ -52,7 +52,7 @@ public class PurchaseController {
             @PathVariable String userName, HttpServletRequest request) {
         User currentUser = userService.getCurrentUser(request);
         return new ResponseEntity<>(
-                purchaseService.getPurchaseListByUserName(currentUser),
+                purchaseService.getPurchaseListByUserName(userName, currentUser),
                 HttpStatus.OK);
     }
 }
