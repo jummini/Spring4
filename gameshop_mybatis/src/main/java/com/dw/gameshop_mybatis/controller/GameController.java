@@ -34,7 +34,7 @@ public class GameController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size) {
         return new ResponseEntity<>(
-                null,
+                gameService.getGamesByPage(page, size),
                 HttpStatus.OK);
     }
 }
