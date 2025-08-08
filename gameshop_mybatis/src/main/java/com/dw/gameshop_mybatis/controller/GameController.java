@@ -1,6 +1,7 @@
 package com.dw.gameshop_mybatis.controller;
 
 import com.dw.gameshop_mybatis.dto.GameDTO;
+import com.dw.gameshop_mybatis.enums.GameGenre;
 import com.dw.gameshop_mybatis.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,17 @@ public class GameController {
             @RequestParam(defaultValue = "5") int size) {
         return new ResponseEntity<>(
                 gameService.getGamesByPage(page, size),
+                HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<GameDTO>> searchGames(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) GameGenre genre,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return new ResponseEntity<>(
+                gameService.searchGames(title,genre,page,size),
                 HttpStatus.OK);
     }
 }

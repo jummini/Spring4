@@ -1,5 +1,6 @@
 package com.dw.gameshop_mybatis.mapper;
 
+import com.dw.gameshop_mybatis.enums.GameGenre;
 import com.dw.gameshop_mybatis.model.Game;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -13,4 +14,8 @@ public interface GameMapper {
     Game getGameById(@Param("id") long id);
     List<Game> getGamesByPage(@Param("offset") int offset,
                               @Param("limit") int limit);
+    List<Game> searchGames(@Param("title") String title,
+                           @Param("genre") GameGenre genre,
+                           @Param("offset") int offset,
+                           @Param("limit") int limit);
 }

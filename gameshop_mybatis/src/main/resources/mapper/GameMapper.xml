@@ -20,4 +20,19 @@
         order by id
         limit #{limit} offset #{offset}
     </select>
+
+    <select id="searchGames" resultType="Game">
+        select id, title, genre, price, image_url, text
+        from games
+        <where>
+            <if test="title != null and title != ''">
+                AND title like concat('%', #{title}, '%')
+            </if>
+            <if test="genre != null">
+                AND genre = #{genre}
+            </if>
+        </where>
+        order by id desc
+        limit #{limit} offset #{offset}
+    </select>
 </mapper>

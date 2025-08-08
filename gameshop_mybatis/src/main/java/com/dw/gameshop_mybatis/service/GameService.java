@@ -1,6 +1,7 @@
 package com.dw.gameshop_mybatis.service;
 
 import com.dw.gameshop_mybatis.dto.GameDTO;
+import com.dw.gameshop_mybatis.enums.GameGenre;
 import com.dw.gameshop_mybatis.exception.ResourceNotFoundException;
 import com.dw.gameshop_mybatis.mapper.GameMapper;
 import com.dw.gameshop_mybatis.model.Game;
@@ -36,6 +37,15 @@ public class GameService {
     public List<GameDTO> getGamesByPage(int page, int size) {
         int offset = page * size;
         return gameMapper.getGamesByPage(offset, size).stream()
+                .map(Game::toDto)
+                .toList();
+    }
+
+    public List<GameDTO> searchGames(String title, GameGenre genre,
+                                     int page, int size) {
+        int offset = page * size;
+        return gameMapper.searchGames(title,genre,offset,size)
+                .stream()
                 .map(Game::toDto)
                 .toList();
     }
