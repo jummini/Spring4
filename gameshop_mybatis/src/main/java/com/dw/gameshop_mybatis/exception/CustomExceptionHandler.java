@@ -51,17 +51,17 @@ public class CustomExceptionHandler {
                 HttpStatus.FORBIDDEN);
     }
 
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    protected ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-//        Map<String, String> errors = Map.of("Validation Error",
-//                //(ex.getMessage() != null ? ex.getMessage() : "No Exception Message"));
-//                ex.getBindingResult().getAllErrors().stream()
-//                        .map(DefaultMessageSourceResolvable::getDefaultMessage)
-//                        .toList().toString());
-//        return new ResponseEntity<>(
-//                errors,
-//                HttpStatus.BAD_REQUEST);
-//    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    protected ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = Map.of("Validation Error",
+                //(ex.getMessage() != null ? ex.getMessage() : "No Exception Message"));
+                ex.getBindingResult().getAllErrors().stream()
+                        .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                        .toList().toString());
+        return new ResponseEntity<>(
+                errors,
+                HttpStatus.BAD_REQUEST);
+    }
 
 //    @ExceptionHandler(ConstraintViolationException.class)
 //    protected ResponseEntity<Map<String, String>> handleConstraintViolationException(ConstraintViolationException ex) {

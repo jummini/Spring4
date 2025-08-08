@@ -6,6 +6,7 @@ import com.dw.gameshop_mybatis.model.User;
 import com.dw.gameshop_mybatis.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(
-                                    @RequestBody UserDTO userDTO) {
+                               @Valid @RequestBody UserDTO userDTO) {
         return new ResponseEntity<>(
                 userService.registerUser(userDTO),
                 HttpStatus.CREATED);
